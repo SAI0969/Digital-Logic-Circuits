@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Logic Circuits</title>
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  padding: 30px;
+  color: #1e293b;
+}
+
+main {
+  width: min(95vw, 1050px);
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+  color: #0f172a;
+  letter-spacing: 1px;
+}
+
+nav {
+  display: grid;
+  gap: 18px;
+}
+
+.module {
+  display: block;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  color: inherit;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.module:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.module h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.module p {
+  color: #475569;
+  line-height: 1.7;
+  font-size: 0.97rem;
+}
+
+@media (min-width: 900px) {
+  nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .module:last-child {
+    grid-column: span 2;
+  }
+}
+</style>
+</head>
+<body>
+  <main>
+    <h1>Digital Logic Circuits</h1>
+    <nav aria-label="Module links">
+      <a class="module" href="Module_1.html" target = "_blank">
+        <h2>Module 1: Number Systems</h2>
+        <p>Positional representation of numbers, Decimal, Octal, Hexadecimal number systems, General radix 'r' system, Conversions, Complements, Binary codes, Arithmetic with signed and unsigned numbers (addition, subtraction).</p>
+      </a>
+
+      <a class="module" href="Module_2.html" target = "_blank">
+        <h2>Module 2: Boolean Algebra and Logic Circuits</h2>
+        <p>Axiomatic definition of Boolean Algebra, Basic theorems and Properties of Boolean Algebra, Boolean Functions, Minterms and Maxterms, Canonical and Standard Forms, Digital logic gates, Synthesis using AND, OR and NOT gates, NAND and NOR logic networks.</p>
+      </a>
+
+      <a class="module" href="Module_3.html" target = "_blank">
+        <h2>Module 3: Gate-Level Minimization</h2>
+        <p>The K-Map method, two variable K-Map, three variable K-Map, four variable K-Map, five variable K-Map, K-Maps with don't care conditions (incompletely specified functions).</p>
+      </a>
+
+      <a class="module" href="Module_4.html" target = "_blank">
+        <h2>Module 4: Combinational Logic</h2>
+        <p>Design procedures, Adders, Subtractors, Multiplexers, Demultiplexers, Encoders, Decoders, Priority encoder, Magnitude comparator, Decimal adder (BCD adder), Binary Multiplier.</p>
+      </a>
+
+      <a class="module" href="Module_5.html" target = "_blank">
+        <h2>Module 5: Sequential Logic</h2>
+        <p>Flip Flops, Basic latch, R-S flip flop, D flip flop, T flip flop, JK flip flop, Registers, Shift registers, Synchronous and Asynchronous (ripple) counters.</p>
+      </a>
+    </nav>
+  </main>
+</body>
+</html>
