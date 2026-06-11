@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boolean Algebra and Logic Gates Guide</title>
+    <style>
+
+        nav a{
+    transition:.25s;
+}
+
+nav a:hover{
+    transform:translateY(-2px);
+}
+
+.card{
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+button{
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Segoe UI, Arial, sans-serif;
+            line-height: 1.55;
+            color: #17212b;
+            background: #fbfaf7;
+        }
+
+        header {
+            padding: 38px 20px 28px;
+            background: linear-gradient(135deg, #e9f5f2, #f8eee8 55%, #f7f4db);
+            border-bottom: 1px solid #d8dfdc;
+        }
+
+        .wrap {
+            max-width: 1120px;
+            margin: auto;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(2rem, 4vw, 3.7rem);
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            max-width: 880px;
+            color: #5d6874;
+            font-size: 1.08rem;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(251, 250, 247, .96);
+            border-bottom: 1px solid #d8dfdc;
+            z-index: 5;
+        }
+
+        nav .wrap {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            flex: 0 0 auto;
+            text-decoration: none;
+            color: #17212b;
+            background: white;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            padding: 8px 11px;
+            font-size: .92rem;
+        }
+
+        main {
+            padding: 28px 20px 52px;
+        }
+
+        section {
+            margin-bottom: 28px;
+            padding: 25px;
+            background: white;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin: 0 0 14px;
+            font-size: 1.7rem;
+        }
+
+        h3 {
+            margin: 18px 0 8px;
+            font-size: 1.12rem;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+            margin: 8px 0 12px;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            padding: 16px;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .method {
+            border-left: 5px solid #176b6b;
+            background: #eef5f3;
+        }
+
+        .warn {
+            border-left: 5px solid #9c3f2f;
+            background: #f7eee9;
+        }
+
+        .note {
+            border-left: 5px solid #6d681e;
+            background: #faf8df;
+        }
+
+        pre, code {
+            font-family: Cascadia Mono, Consolas, monospace;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 10px 0;
+            padding: 14px;
+            color: #e9f3f0;
+            background: #102128;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            border: 1px solid #d8dfdc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #d8dfdc;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef5f3;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .tool {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 16px;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            background: #f8fbfa;
+        }
+
+        .two {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 700;
+        }
+
+        input, select, button, textarea {
+            width: 100%;
+            min-height: 42px;
+            padding: 9px 10px;
+            border: 1px solid #bfc9c6;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        button {
+            color: white;
+            background: #176b6b;
+            border-color: #176b6b;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+
+
+        .result {
+            min-height: 44px;
+            padding: 11px;
+            border: 1px dashed #9fb3ad;
+            border-radius: 8px;
+            background: white;
+            word-break: break-word;
+            white-space: pre-wrap;
+            font-family: Cascadia Mono, Consolas, monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: #e2efeb;
+            color: #174f4f;
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .switches {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: auto;
+        }
+
+        .switch input {
+            width: 22px;
+            min-height: 22px;
+        }
+
+        .led {
+            display: inline-grid;
+            place-items: center;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid #9ba8a5;
+            background: #e8ecea;
+            color: #26302f;
+            font-weight: 800;
+            font-size: 1.4rem;
+            box-shadow: inset 0 0 0 8px rgba(255, 255, 255, .5);
+        }
+
+        .led.on {
+            background: #1d8f6f;
+            color: #fff;
+            border-color: #126153;
+            box-shadow: 0 0 24px rgba(29, 143, 111, .35), inset 0 0 0 8px rgba(255, 255, 255, .18);
+        }
+
+        .gatebox {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .wire {
+            height: 4px;
+            background: #8ca19c;
+            border-radius: 99px;
+        }
+
+        .gate-symbol {
+            min-width: 150px;
+            min-height: 92px;
+            border: 3px solid #176b6b;
+            border-left-width: 18px;
+            border-radius: 8px 46px 46px 8px;
+            display: grid;
+            place-items: center;
+            background: #eef5f3;
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
+
+        .gate-symbol.not {
+            border-radius: 8px;
+            clip-path: polygon(0 0, 82% 50%, 0 100%);
+        }
+
+        .gate-symbol.nand::after,
+        .gate-symbol.nor::after,
+        .gate-symbol.xnor::after,
+        .gate-symbol.not::after {
+            content: "";
+            width: 14px;
+            height: 14px;
+            border: 3px solid #176b6b;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+        }
+
+        .gate-wrap {
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        .small {
+            color: #5d6874;
+            font-size: .94rem;
+        }
+
+        .formula {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .truth td, .truth th {
+            text-align: center;
+        }
+
+        @media print {
+            nav, .tool, button {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class = "wrap">
+            <h1>Boolean Algebra and Digital Logic Gates</h1>
+            <p class = "subtitle">A study guide with axioms, theorems, Boolean functions, minterms, maxterms, canonical forms, gates, AND-OR-NOT synthesis, and NAND/NOR networks, plus interactive logic tools.</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class = "wrap">
+            <a href = "#booleans">Booleans First</a>
+            <a href = "#axioms">Axioms</a>
+            <a href = "#theorems">Theorems</a>
+            <a href = "#functions">Functions</a>
+            <a href = "#minmax">Minterms & Maxterms</a>
+            <a href = "#forms">Forms</a>
+            <a href = "#soppos">SOP ↔ POS</a>
+            <a href = "#gates">Logic Gates</a>
+            <a href = "#synthesis">Synthesis</a>
+            <a href = "#nandnor">NAND/NOR</a>
+            <a href = "#tools">Interactive Tools</a>
+        </div>
+    </nav>
+
+    <main class = "wrap">
+        <section id = "booleans">
+            <h2>1. What Are Booleans for Logic Gates?</h2>
+            <p>A Boolean variable has only two possible values: <strong>0</strong> or <strong>1</strong>. In digital logic, these values represent two voltage states.</p>
+            
+            <div class = "grid">
+                <div class = "card method">
+                    <h3>Boolean 0</h3>
+                    <p><span class = "badge">False / LOW / OFF</span></p>
+                    <p>Means the condition is not true. In a circuit, it commonly represents a low voltage level.</p>
+                </div>
+                <div class = "card method">
+                    <h3>Boolean 1</h3>
+                    <p><span class = "badge">True / HIGH / ON</span></p>
+                    <p>Means the condition is true. In a circuit, it commonly represents a high voltage level.</p>
+                </div>
+                <div class = "card note">
+                    <h3>Logic Gate Idea</h3>
+                    <p>A logic gate accepts Boolean inputs and produces one Boolean output. Example: an AND gate outputs 1 only when all inputs are 1.</p>
+                </div>
+            </div>
+
+            <table class = "truth">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Meaning</th>
+                    <th>Common name</th>
+                </tr>
+                <tr>
+                    <td>A + B</td>
+                    <td>A OR B</td>
+                    <td>Logical addition</td>
+                </tr>
+                <tr>
+                    <td>A · B or AB</td>
+                    <td>A AND B</td>
+                    <td>Logical multiplication</td>
+                </tr>
+                <tr>
+                    <td>A' or ¬A</td>
+                    <td>NOT A</td>
+                    <td>Complement</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id = "axioms">
+            <h2>2. Axiomatic Definition of Boolean Algebra</h2>
+            <p>Boolean algebra is an algebraic system over a set B with two binary operations OR (+), AND (·), one unary operation NOT ('), and two special elements 0 and 1.</p>
+            
+            <div class = "grid">
+                <div class = "card method">
+                    <h3>Identity Elements</h3>
+                    <pre>A + 0 = A&#10;A · 1 = A</pre>
+                </div>
+                <div class = "card method">
+                    <h3>Complement Laws</h3>
+                    <pre>A + A' = 1&#10;A · A' = 0</pre>
+                </div>
+                <div class = "card method">
+                    <h3>Idempotent Laws</h3>
+                    <pre>A + A = A&#10;A · A = A</pre>
+                </div>
+                <div class = "card method">
+                    <h3>Distinct Elements</h3>
+                    <pre>0 ≠ 1</pre>
+                    <p>The two Boolean values must be different.</p>
+                </div>
+                <div class = "card method">
+                    <h3>Commutative Laws</h3>
+                    <pre>A + B = B + A&#10;A · B = B · A</pre>
+                </div>
+                <div class = "card method">
+                  <h3>Associative Laws</h3>
+                  <pre>A + (B + C) =&#10;(A + B) + C&#10;A(B·C) = (AB)·C </pre>
+                </div>
+                <div class = "card method">
+                    <h3>Distributive Laws</h3>
+                    <pre>A · (B + C) =&#10;A·B + A·C&#10;A + (B · C) =&#10;(A+B)·(A+C)</pre>
+                </div>
+                <div class = "card method">
+                  <h3>DeMorgan's Laws</h3>
+                  <pre>(A + B)' = A' · B'&#10;(AB)' = A' + B' </pre>
+                </div>
+                <div class = "card method">
+                  <h3>Absorption Laws</h3>
+                  <pre>A + A·B = A&#10;A(A + B) = A</pre>
+                </div>
+                <div class = "card method">
+                  <h3>Domination Laws (or) Null Laws</h3>
+                  <pre>A + 1 = A&#10;A · 0 = 0</pre>
+                </div>
+                <div class = "card method">
+                  <h3>Involution Law (or) Double Complement Law</h3>
+                  <pre>(A')' = A</pre>
+                </div>
+            </div>
+        </section>
+
+        <section id = "theorems">
+            <h2>3. Basic Theorems and Properties</h2>
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>OR Form</th>
+                    <th>AND Form</th>
+                </tr>
+                <tr>
+                    <td>Identity</td>
+                    <td>A + 0 = A</td>
+                    <td>A · 1 = A</td>
+                </tr>
+                <tr>
+                    <td>Null / Domination</td>
+                    <td>A + 1 = 1</td>
+                    <td>A · 0 = 0</td>
+                </tr>
+                <tr>
+                    <td>Idempotent</td>
+                    <td>A + A = A</td>
+                    <td>A · A = A</td>
+                </tr>
+                <tr>
+                    <td>Complement</td>
+                    <td>A + A' = 1</td>
+                    <td>A · A' = 0</td>
+                </tr>
+                <tr>
+                    <td>Involution</td>
+                    <td colspan = "2">(A')' = A</td>
+                </tr>
+                <tr>
+                    <td>Absorption</td>
+                    <td>A + A·B = A</td>
+                    <td>A(A+B) = A</td>
+                </tr>
+                <tr>
+                    <td>Associative</td>
+                    <td>A+(B+C)=(A+B)+C</td>
+                    <td>A(BC)=(AB)C</td>
+                </tr>
+                <tr>
+                    <td>De Morgan's Laws</td>
+                    <td>(A+B)' = A'B'</td>
+                    <td>(AB)' = A' + B'</td>
+                </tr>
+            </table>
+            <div class = "card method">
+                <h3>Example Simplification</h3>
+                <pre>F = A + A·B&#10;Use absorption law: A + A·B = A&#10;So F = A</pre>
+            </div>
+        </section>
+
+        <section id = "functions">
+            <h2>4. Boolean Functions</h2>
+            <p>A Boolean function is an expression made from Boolean variables, constants 0 and 1, and operations AND, OR, and NOT. The output is always 0 or 1.</p>
+            
+            <div class = "grid">
+                <div class = "card">
+                    <h3>Example Function</h3>
+                    <pre>F(A,B,C) = A'B + AC</pre>
+                    <p>The function has three input variables. For every input combination, F has one output.</p>
+                </div>
+                <div class = "card">
+                    <h3>Truth Table</h3>
+                    <p>A truth table lists every input combination and the output of the function.</p>
+                    <pre>For 3 variables there are 2^3 = 8 rows.</pre>
+                </div>
+                <div class = "card">
+                    <h3>Literal</h3>
+                    <p>A literal is a variable or its complement, such as A or A'.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id = "minmax">
+            <h2>5. Minterms and Maxterms</h2>
+            <div class="grid">
+                <div class="card method">
+                    <h3>Minterm</h3>
+                    <p>A <b>minterm</b> is an <b>AND</b> term containing every variable exactly once, either complemented or uncomplemented. <b>It is 1</b> for exactly one truth-table row.</p>
+                    <pre>For A,B,C and row 101:&#10;A=1, B=0, C=1&#10;Minterm = A·B'·C = m5</pre>
+                </div>
+                <div class="card method">
+                    <h3>Maxterm</h3>
+                    <p>A <b>maxterm</b> is an <b>OR</b> term containing every variable exactly once. <b>It is 0</b> for exactly one truth-table row.</p>
+                    <pre>For A,B,C and row 101:&#10;A=1, B=0, C=1&#10;Maxterm = A' + B + C' = M5</pre>
+                </div>
+            </div>
+
+            <table class="truth">
+                <tr>
+                    <th>Index</th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>Minterm(Result = 1)</th>
+                    <th>Maxterm(Result = 0)</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>A'B'C'</td>
+                    <td>A+B+C</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>A'B'C</td>
+                    <td>A+B+C'</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>A'BC'</td>
+                    <td>A+B'+C</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>A'BC</td>
+                    <td>A+B'+C'</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>AB'C'</td>
+                    <td>A'+B+C</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>AB'C</td>
+                    <td>A'+B+C'</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>ABC'</td>
+                    <td>A'+B'+C</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>ABC</td>
+                    <td>A'+B'+C'</td>
+                </tr>
+            </table>
+
+            <div class="grid">
+            <div class="card method">
+                <h3>Generalisation of <b>Min</b> terms easily</h3>
+                <pre>To form a minterm, take every variable. If a variable's value in the given row is 0, complement it; if it is 1, leave it unchanged. Then AND all variables together. The resulting expression evaluates to 1 only for that row.</pre>
+                <pre>Example :&#10;Let us analyse for Index 5 &#10;&#10;A = 1; B = 0; C = 1.&#10;&#10;As mentioned above if a variable value is 0 take its compliment, we have B value as 0.&#10;&#10;Hence take its compliment -> B' the other variable values are 1 hence leave it unchanged.&#10;&#10;Now, we need to AND all these variables AB'C.&#10;&#10;It is denoted as m5.&#10;&#10;&#10;&#10;Verification:&#10;&#10;Now this result becomes A = 1, B' = 1, C = 1 AND gate means doing multiplication.&#10;&#10;All the variable values must be 1, then only the result is 1</pre>
+            </div>
+
+            <div class="card method">
+                <h3>Generalisation of <b>Max</b> terms easily</h3>
+                <!-- <pre>To from a maxterm, take every variable. If a variable's value in the given row is 1, complement it; if it is 0, leave it unchanged.Then OR all variables together. The resulting expression evaluates to 0 only for that row.</pre> -->
+                <pre>To form a maxterm, take every variable. If a variable's value in the given row is 1, complement it; if it is 0, leave it unchanged. Then OR all variables together. The resulting expression evaluates to 0 only for that row.</pre>
+                <pre>Example :&#10;Let us analuse for Index 5 &#10;&#10;A = 1; B = 0; C = 1.&#10;&#10;As mentioned above if a variable value is 1 take its compliment, we have both A, C as 1.&#10;&#10;Hence take its compliment -> A', C' the other variable B value is 1 hence leave it unchanged.&#10;&#10;Now, we need to OR all these variables A'+B+C'.&#10;&#10;It is denoted as M5.&#10;&#10;&#10;&#10;Verification:&#10;&#10;Now this result becomes A' = 0, B = 0, C' = 0 OR gate means doing addition.&#10;&#10;All the variable values must be 0, then only the result is 0</pre> 
+
+            </div>
+            
+
+        </div>
+        <p><b>Easy Rule: Find either minterm or maxterm, the other will be the compliment of other<br></b>
+                <br>&ensp;Ex: If we know the minterm of m5 as AB'C, for the maxterm of M5 do compliment of m5 
+                <br>&ensp;(AB'C)' → A' + B + C'</p>
+        </section>
+
+        <section id="forms">
+            <h2>6. Canonical and Standard Forms</h2>
+            <div class="grid">
+                <div class="card method">
+                    <h3>Canonical SOP</h3>
+                    <p>Sum of minterms. Use truth-table rows where F=1.</p>
+                    <pre>F(A,B,C) = Σm(1,3,5)&#10;= A'B'C + A'BC + AB'C</pre>
+                </div>
+                <div class="card method">
+                    <h3>Canonical POS</h3>
+                    <p>Product of maxterms. Use truth-table rows where F=0.</p>
+                    <pre>F(A,B,C) = ΠM(0,2,4,6,7)</pre>
+                </div>
+                <div class="card method">
+                    <h3>Standard SOP</h3>
+                    <p>OR of product terms. Terms do not have to contain every variable.</p>
+                    <pre>F = A'B + AC</pre>
+                </div>
+                <div class="card method">
+                    <h3>Standard POS</h3>
+                    <p>AND of sum terms. Terms do not have to contain every variable.</p>
+                    <pre>F = (A+B')(A'+C)</pre>
+                </div>
+            </div>
+            <div class="card note">
+                <strong>Canonical means complete:</strong> every term contains all variables. <strong>Standard means structured:</strong> SOP is OR of AND terms; POS is AND of OR terms.
+            </div>
+        </section>
+
+        <section id="soppos">
+            <h2>7. SOP to POS and POS to SOP Conversion</h2>
+            <p>Canonical SOP and canonical POS describe the same Boolean function in opposite ways. SOP lists the truth-table rows where F=1. POS lists the truth-table rows where F=0.</p>
+            <div class="grid">
+                <div class="card method">
+                    <h3>SOP to POS</h3>
+                    <ol>
+                        <li>Find the total number of rows: 2<sup>n</sup>, where n is the number of variables.</li>
+                        <li>Write all row indexes from 0 to 2<sup>n</sup>-1.</li>
+                        <li>Remove the SOP minterm indexes.</li>
+                        <li>The remaining indexes become the POS maxterm indexes.</li>
+                    </ol>
+                    <pre>F(A,B,C) = Σm(1,3,5)
+All indexes: 0,1,2,3,4,5,6,7
+Missing indexes: 0,2,4,6,7
+
+So F(A,B,C) = ΠM(0,2,4,6,7)</pre>
+                </div>
+                <div class="card method">
+                    <h3>POS to SOP</h3>
+                    <ol>
+                        <li>Find the total number of rows.</li>
+                        <li>Write all row indexes.</li>
+                        <li>Remove the POS maxterm indexes.</li>
+                        <li>The remaining indexes become the SOP minterm indexes.</li>
+                    </ol>
+                    <pre>F(A,B,C) = ΠM(0,2,4,6,7)
+All indexes: 0,1,2,3,4,5,6,7
+Missing indexes: 1,3,5
+
+So F(A,B,C) = Σm(1,3,5)</pre>
+                </div>
+            </div>
+            <div class="card note">
+                <strong>Quick rule:</strong> For the same function, minterm indexes and maxterm indexes are complements of each other over the full truth table.
+            </div>
+        </section>
+
+        <section id="gates">
+            <h2>8. Digital Logic Gates</h2>
+            <p>Digital gates implement Boolean operations in hardware.</p>
+            <table class="truth">
+                <tr>
+                    <th>Gate</th>
+                    <th>Expression</th>
+                    <th>Output is 1 when, </th>
+                </tr>
+                <tr>
+                    <td>NOT</td>
+                    <td>Y = A'</td>
+                    <td>A is 0</td>
+                </tr>
+                <tr>
+                    <td>AND</td>
+                    <td>Y = A·B</td>
+                    <td>A and B are both 1</td>
+                </tr>
+                <tr>
+                    <td>OR</td>
+                    <td>Y = A+B</td>
+                    <td>At least one input is 1</td>
+                </tr>
+                <tr>
+                    <td>NAND</td>
+                    <td>Y = (A·B)'</td>
+                    <td>Not both inputs are 1</td>
+                </tr>
+                <tr>
+                    <td>NOR</td>
+                    <td>Y = (A+B)'</td>
+                    <td>Both inputs are 0</td>
+                </tr>
+                <tr>
+                    <td>XOR</td>
+                    <td>Y = A⊕B</td>
+                    <td>Inputs are different</td>
+                </tr>
+                <tr>
+                    <td>XNOR</td>
+                    <td>Y = (A⊕B)'</td>
+                    <td>Inputs are the same</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="synthesis">
+            <h2>9. Synthesis Using AND, OR, and NOT Gates</h2>
+            <p>Synthesis means building a circuit from a Boolean function or truth table.Most commonly we use SOP form for easy and quicker building of the gates.(As, We know that SOP uses minterm, Hence it is easier to build gates.)</p>
+            <div class="card method">
+                <ol>
+                    <li>Make the truth table.</li>
+                    <li>Find all rows where F=1.(Most of the time where F becomes 1 is given in question, If in question you are asked to make for F becomes 0 then use maxterm)</li>
+                    <li>Write one minterm for each F=1 row.</li>
+                    <li>OR the minterms together to get SOP.</li>
+                    <li>Build each minterm with NOT and AND gates, then combine them with OR gates.</li>
+                </ol></div>
+                <pre><b>Question1</b>: Realize the Boolean function F(A,B,C)=Σm(1,3,5) using AND, OR, and NOT gates.</pre>
+                <p>In above question1 it is given that, F(A,B,C)=Σm(1,3,5) where Σm means that for those indices of F the values are 1.Since here Σm is used which means that it is minterm hence do OR gate</p>
+                <pre><b>Question2</b>: Design a combinational circuit whose output is 1 for the input combinations: 
+           001, 011, and 101. Use only AND, OR, and NOT gates.</pre>
+                <p>In above question2 it is given that, For input combinations of 001, 011, 101, The output is 1 which means that for<br> 
+                    A = 0, B = 0, C = 1<br>
+                    A = 0, B = 1, C = 1<br>
+                    A = 1, B = 0, C = 1<br>
+                The output is 1</p>
+                <p><b>Note: Both the questions are same but are asked in different manner</b></p>
+                <p><b>--------------------------------------------------------------------------------------------------------------------------------------------------------------</b></p>
+                <p>Solution:<br>(Let us solve Question1 first)<br>It is given that for F(A,B,C)=Σm(1,3,5) which means that <br> We have 3 variables named A, B, C and F is 1 when the indices becomes 1, 3, 5<br>We need to <b>construct a truth table</b> along with <b>indices</b> from <b>0 to 2<sup>n</sup>- 1</b> where <b>n is number of variables.</b></p>
+            <table class="truth">
+                <tr>
+                    <th>Index</th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>F(Given in question)</th>
+                    
+                </tr>
+
+                <tr>
+                    <th>0</th>
+                    <th>0</th>
+                    <th>0</th>
+                    <th>0</th>
+                    <th>0</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>1</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>2</th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>0</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>3</th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>4</th>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>0</th>
+                    <th>0</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>5</th>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>1</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>6</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>0</th>
+                    
+
+                </tr>
+
+                <tr>
+                    <th>7</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>0</th>
+                    
+
+                </tr>
+
+
+            </table>
+            <p>After construction of truth table, Identify all the rows where F = 1<br>
+                A = 0, B = 0, C = 1<br>
+                A = 0, B = 1, C = 1<br>
+                A = 1, B = 0, C = 1<br>
+                As we know the <b>rule</b> for <b>minterms </b>:<br>
+                If <b>0 → Make it as compliment,&#10;If 1 → Do not change</b><br>
+                Therefore for <br>A = 0, B = 0, C = 1, it Becomes <b>A'B'C</b><br>
+                A = 0, B = 1, C = 1, it Becomes <b>A'BC</b><br>
+                A = 1, B = 0, C = 1, it Becomes <b>AB'C</b><br>
+                Now combine all the results using OR gate <br>
+                A'B'C + A'BC + AB'C is the final answer<br>
+                <b>F = A'B'C + A'BC + AB'C</b>
+                Similarly solve for 2nd question, You will get the same answer as the 1st question
+            </p>
+        </section>
+
+        <section id="nandnor">
+            <h2>10. NAND and NOR Logic Networks</h2>
+            <p>NAND and NOR are called universal gates because either one can be used to build NOT, AND, and OR gates.</p>
+            <div class="grid">
+                <div class="card method">
+                    <h3>Using NAND Only</h3>
+                    <pre>NOT A = A NAND A&#10;A AND B = (A NAND B) NAND (A NAND B)&#10;A OR B = (A NAND A) NAND (B NAND B)</pre>
+                </div>
+                <div class="card method">
+                    <h3>Using NOR Only</h3>
+                    <pre>NOT A = A NOR A&#10;A OR B = (A NOR B) NOR (A NOR B)&#10;A AND B = (A NOR A) NOR (B NOR B)</pre>
+                </div>
+            </div>
+            <div class="card note">
+                NAND-NAND networks naturally implement SOP forms. NOR-NOR networks naturally implement POS forms.
+            </div>
+        </section>
+
+        <section id="tools">
+            <h2>11. Logic Gates</h2>
+            <p>Use these to test gates, create truth tables from minterms, and see NAND/NOR equivalents.</p>
+            
+            <div class="tool">
+                <h3>Logic Gate</h3>
+                <div class="two">
+                    <div>
+                        <label for="gateType">Gate</label>
+                        <select id="gateType" onchange="updateGate()">
+                            <option>AND</option>
+                            <option>OR</option>
+                            <option>NOT</option>
+                            <option>NAND</option>
+                            <option>NOR</option>
+                            <option>XOR</option>
+                            <option>XNOR</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Inputs</label>
+                        <div class="switches">
+                            <label class="switch"><input type="checkbox" id="inputA" onchange="updateGate()"> A</label>
+                            <label class="switch" id="bSwitch"><input type="checkbox" id="inputB" onchange="updateGate()"> B</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gatebox">
+                    <div>
+                        <div class="wire"></div>
+                        <p class="small" id="inputText">A=0, B=0</p>
+                    </div>
+                    <div class="gate-wrap">
+                        <div class="gate-symbol" id="gateSymbol">AND</div>
+                    </div>
+                    <div>
+                        <span class="led" id="gateLed">0</span>
+                        <p class="formula" id="gateFormula">Y = A·B = 0</p>
+                    </div>
+                </div>
+                <div id="gateTruth" class="result"></div>
+            </div>
+
+            <div class="tool">
+                <h3>Minterm / Maxterm Truth Table Builder</h3>
+                <div class="three">
+                    <div>
+                        <label for="varCount">Variables</label>
+                        <select id="varCount" onchange="buildFunction()">
+                            <option value="2">2 variables: A,B</option>
+                            <option value="3" selected>3 variables: A,B,C</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="minterms">Minterms where F=1</label>
+                        <input id="minterms" value="1,3,5" oninput="buildFunction()">
+                    </div>
+                    <div>
+                        <label for="dontCares">Don't cares, optional</label>
+                        <input id="dontCares" value="" oninput="buildFunction()">
+                    </div>
+                </div>
+                <button onclick="buildFunction()">Build Truth Table and Forms</button>
+                <div id="functionResult" class="result"></div>
+            </div>
+
+            <div class="tool">
+                <h3>SOP ↔ POS Converter</h3>
+                <div class="three">
+                    <div>
+                        <label for="convertVarCount">Variables</label>
+                        <select id="convertVarCount" onchange="convertSopPos()">
+                            <option value="2">2 variables: A,B</option>
+                            <option value="3" selected>3 variables: A,B,C</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="convertMode">Conversion</label>
+                        <select id="convertMode" onchange="convertSopPos()">
+                            <option value="sopToPos">SOP to POS</option>
+                            <option value="posToSop">POS to SOP</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="convertIndexes">Indexes</label>
+                        <input id="convertIndexes" value="1,3,5" oninput="convertSopPos()">
+                    </div>
+                </div>
+                <button onclick="convertSopPos()">Convert with Steps</button>
+                <div id="sopPosResult" class="result"></div>
+            </div>
+
+            <div class="tool">
+                <h3>NAND / NOR Equivalent Builder</h3>
+                <div class="two">
+                    <div>
+                        <label for="targetGate">Target gate</label>
+                        <select id="targetGate" onchange="showUniversal()">
+                            <option>NOT</option>
+                            <option>AND</option>
+                            <option>OR</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="universalType">Use only</label>
+                        <select id="universalType" onchange="showUniversal()">
+                            <option>NAND</option>
+                            <option>NOR</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="showUniversal()">Show Network</button>
+                <div id="universalResult" class="result"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function bit(v) { 
+            return v ? 1 : 0; 
+        }
+
+        function gateValue(type, a, b) {
+            if (type === 'NOT') return bit(!a);
+            if (type === 'AND') return bit(a && b);
+            if (type === 'OR') return bit(a || b);
+            if (type === 'NAND') return bit(!(a && b));
+            if (type === 'NOR') return bit(!(a || b));
+            if (type === 'XOR') return bit(a !== b);
+            if (type === 'XNOR') return bit(a === b);
+            return 0;
+        }
+
+        function gateExpression(type) {
+            return {
+                NOT: "Y = A'",
+                AND: 'Y = A·B',
+                OR: 'Y = A+B',
+                NAND: "Y = (A·B)'",
+                NOR: "Y = (A+B)'",
+                XOR: 'Y = A⊕B',
+                XNOR: "Y = (A⊕B)'"
+            }[type];
+        }
+
+        function truthForGate(type) {
+            const rows = type === 'NOT' 
+                ? [[0, '-', 1], [1, '-', 0]] 
+                : [[0, 0, gateValue(type, 0, 0)], [0, 1, gateValue(type, 0, 1)], [1, 0, gateValue(type, 1, 0)], [1, 1, gateValue(type, 1, 1)]];
+            
+            let text = 'Truth table\nA B | Y\n';
+            rows.forEach(r => {
+                text += `${r[0]} ${r[1]} | ${r[2]}\n`;
+            });
+            return text.trim();
+        }
+
+        function updateGate() {
+            const type = document.getElementById('gateType').value;
+            const a = document.getElementById('inputA').checked;
+            const b = document.getElementById('inputB').checked;
+            const y = gateValue(type, a, b);
+
+            document.getElementById('bSwitch').style.display = type === 'NOT' ? 'none' : 'flex';
+            document.getElementById('inputText').textContent = type === 'NOT' ? `A=${bit(a)}` : `A=${bit(a)}, B=${bit(b)}`;
+            
+            const symbol = document.getElementById('gateSymbol');
+            symbol.textContent = type;
+            symbol.className = 'gate-symbol ' + type.toLowerCase();
+            
+            const led = document.getElementById('gateLed');
+            led.textContent = y;
+            led.className = 'led ' + (y ? 'on' : '');
+
+            document.getElementById('gateFormula').textContent = `${gateExpression(type)} = ${y}`;
+            document.getElementById('gateTruth').textContent = truthForGate(type);
+        }
+
+        function parseList(value, max) {
+            if (!value.trim()) return [];
+            const nums = value.split(',').map(x => Number(x.trim())).filter(x => Number.isInteger(x));
+            return [...new Set(nums)].filter(x => x >= 0 && x < max).sort((a, b) => a - b);
+        }
+
+        function bitsForIndex(i, n) {
+            return i.toString(2).padStart(n, '0').split('').map(Number);
+        }
+
+        function mintermExpr(i, n) {
+            const vars = ['A', 'B', 'C'];
+            return bitsForIndex(i, n).map((v, idx) => vars[idx] + (v ? '' : "'")).join('');
+        }
+
+        function maxtermExpr(i, n) {
+            const vars = ['A', 'B', 'C'];
+            return '(' + bitsForIndex(i, n).map((v, idx) => vars[idx] + (v ? "'" : '')).join('+') + ')';
+        }
+
+        function buildFunction() {
+            const n = Number(document.getElementById('varCount').value);
+            const rowCount = Math.pow(2, n);
+            const mins = parseList(document.getElementById('minterms').value, rowCount);
+            const dcs = parseList(document.getElementById('dontCares').value, rowCount);
+            const maxs = [];
+
+            let text = `Variables: ${['A', 'B', 'C'].slice(0, n).join(', ')}\nMinterms: Σm(${mins.join(',') || 'none'})\n`;
+            text += dcs.length ? `Don't cares: d(${dcs.join(',')})\n` : '';
+            text += '\nTruth table\n';
+            text += ['Index'].concat(['A', 'B', 'C'].slice(0, n), ['F']).join(' ') + '\n';
+
+            for (let i = 0; i < rowCount; i++) {
+                const f = mins.includes(i) ? 1 : (dcs.includes(i) ? 'x' : 0);
+                if (f === 0) maxs.push(i);
+                text += [i].concat(bitsForIndex(i, n), [f]).join(' ') + '\n';
+            }
+
+            const sop = mins.length ? mins.map(i => mintermExpr(i, n)).join(' + ') : '0';
+            const pos = maxs.length ? maxs.map(i => maxtermExpr(i, n)).join(' · ') : '1';
+
+            text += `\nCanonical SOP: F = Σm(${mins.join(',') || 'none'}) = ${sop}`;
+            text += `\nCanonical POS: F = ΠM(${maxs.join(',') || 'none'}) = ${pos}`;
+            text += `\n\nHow it is done: every row with F=1 becomes one minterm. Every row with F=0 becomes one maxterm.`;
+            
+            document.getElementById('functionResult').textContent = text;
+        }
+
+        function convertSopPos() {
+            const n = Number(document.getElementById('convertVarCount').value);
+            const rowCount = Math.pow(2, n);
+            const mode = document.getElementById('convertMode').value;
+            const input = parseList(document.getElementById('convertIndexes').value, rowCount);
+            const all = Array.from({ length: rowCount }, (_, i) => i);
+            const complement = all.filter(i => !input.includes(i));
+            const vars = ['A', 'B', 'C'].slice(0, n).join(',');
+            const inputName = mode === 'sopToPos' ? 'SOP minterms' : 'POS maxterms';
+            const outputName = mode === 'sopToPos' ? 'POS maxterms' : 'SOP minterms';
+            const inputSymbol = mode === 'sopToPos' ? 'Σm' : 'ΠM';
+            const outputSymbol = mode === 'sopToPos' ? 'ΠM' : 'Σm';
+            const expanded = mode === 'sopToPos'
+                ? (complement.length ? complement.map(i => maxtermExpr(i, n)).join(' · ') : '1')
+                : (complement.length ? complement.map(i => mintermExpr(i, n)).join(' + ') : '0');
+
+            let text = `Variables: ${vars}\n`;
+            text += `Total rows: 2^${n} = ${rowCount}\n`;
+            text += `All indexes: ${all.join(',')}\n`;
+            text += `Given ${inputName}: ${inputSymbol}(${input.join(',') || 'none'})\n`;
+            text += `Remove these indexes from the full list.\n`;
+            text += `Remaining indexes: ${complement.join(',') || 'none'}\n\n`;
+            text += `Converted ${outputName}: F(${vars}) = ${outputSymbol}(${complement.join(',') || 'none'})\n`;
+            text += `Expanded form: F = ${expanded}\n\n`;
+            text += mode === 'sopToPos'
+                ? 'How it is done: SOP gives the rows where F=1, so POS uses every row where F=0.'
+                : 'How it is done: POS gives the rows where F=0, so SOP uses every row where F=1.';
+
+            document.getElementById('sopPosResult').textContent = text;
+        }
+
+        function showUniversal() {
+            const target = document.getElementById('targetGate').value;
+            const uni = document.getElementById('universalType').value;
+            
+            const nand = {
+                NOT: "A NAND A",
+                AND: "(A NAND B) NAND (A NAND B)",
+                OR: "(A NAND A) NAND (B NAND B)"
+            };
+            const nor = {
+                NOT: "A NOR A",
+                OR: "(A NOR B) NOR (A NOR B)",
+                AND: "(A NOR A) NOR (B NOR B)"
+            };
+
+            const map = uni === 'NAND' ? nand : nor;
+            document.getElementById('universalResult').textContent = `Target: ${target}\nUse only: ${uni}\nNetwork: ${target} = ${map[target]}\n\nHow it is done: first create NOT using tied inputs, then combine inverted signals according to De Morgan's laws.`;
+        }
+
+        // Initialize state on load
+        updateGate();
+        buildFunction();
+        convertSopPos();
+        showUniversal();
+    </script>
+</body>
+</html>
