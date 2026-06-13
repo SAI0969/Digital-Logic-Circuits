@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gate-Level Minimization</title>
+    <style>
+
+        nav a{
+    transition:.25s;
+}
+
+nav a:hover{
+    transform:translateY(-2px);
+}
+
+.card{
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+button{
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Segoe UI, Arial, sans-serif;
+            line-height: 1.55;
+            color: #17212b;
+            background: #fbfaf7;
+            /*font-family: Arial, sans-serif;*/
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            padding: 38px 20px 28px;
+            background: linear-gradient(135deg, #e9f5f2, #f8eee8 55%, #f7f4db);
+            border-bottom: 1px solid #d8dfdc;
+        }
+
+        .wrap {
+            max-width: 1120px;
+            margin: auto;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(2rem, 4vw, 3.7rem);
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            max-width: 880px;
+            color: #5d6874;
+            font-size: 1.08rem;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(251, 250, 247, .96);
+            border-bottom: 1px solid #d8dfdc;
+            z-index: 5;
+        }
+
+        nav .wrap {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            flex: 0 0 auto;
+            text-decoration: none;
+            color: #17212b;
+            background: white;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            padding: 8px 11px;
+            font-size: .92rem;
+        }
+
+        main {
+            padding: 28px 20px 52px;
+        }
+
+        section {
+            margin-bottom: 28px;
+            padding: 25px;
+            background: white;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin: 0 0 14px;
+            font-size: 1.7rem;
+        }
+
+        h3 {
+            margin: 18px 0 8px;
+            font-size: 1.12rem;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+            margin: 8px 0 12px;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            padding: 16px;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .method {
+            border-left: 5px solid #176b6b;
+            background: #eef5f3;
+        }
+
+        .warn {
+            border-left: 5px solid #9c3f2f;
+            background: #f7eee9;
+        }
+
+        .note {
+            border-left: 5px solid #6d681e;
+            background: #faf8df;
+        }
+        .corner {
+        background-color: #b2bec3;
+    }
+
+        pre, code {
+            font-family: Cascadia Mono, Consolas, monospace;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 10px 0;
+            padding: 14px;
+            color: #e9f3f0;
+            background: #102128;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            border: 1px solid #d8dfdc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #d8dfdc;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef5f3;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .tool {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 16px;
+            border: 1px solid #d8dfdc;
+            border-radius: 8px;
+            background: #f8fbfa;
+        }
+
+        .two {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 700;
+        }
+
+        input, select, button, textarea {
+            width: 100%;
+            min-height: 42px;
+            padding: 9px 10px;
+            border: 1px solid #bfc9c6;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        button {
+            color: white;
+            background: #176b6b;
+            border-color: #176b6b;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+
+
+        .result {
+            min-height: 44px;
+            padding: 11px;
+            border: 1px dashed #9fb3ad;
+            border-radius: 8px;
+            background: white;
+            word-break: break-word;
+            white-space: pre-wrap;
+            font-family: Cascadia Mono, Consolas, monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: #e2efeb;
+            color: #174f4f;
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .switches {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: auto;
+        }
+
+        .switch input {
+            width: 22px;
+            min-height: 22px;
+        }
+
+        .led {
+            display: inline-grid;
+            place-items: center;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid #9ba8a5;
+            background: #e8ecea;
+            color: #26302f;
+            font-weight: 800;
+            font-size: 1.4rem;
+            box-shadow: inset 0 0 0 8px rgba(255, 255, 255, .5);
+        }
+
+        .led.on {
+            background: #1d8f6f;
+            color: #fff;
+            border-color: #126153;
+            box-shadow: 0 0 24px rgba(29, 143, 111, .35), inset 0 0 0 8px rgba(255, 255, 255, .18);
+        }
+
+        .gatebox {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .wire {
+            height: 4px;
+            background: #8ca19c;
+            border-radius: 99px;
+        }
+
+        .gate-symbol {
+            min-width: 150px;
+            min-height: 92px;
+            border: 3px solid #176b6b;
+            border-left-width: 18px;
+            border-radius: 8px 46px 46px 8px;
+            display: grid;
+            place-items: center;
+            background: #eef5f3;
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
+
+        .gate-symbol.not {
+            border-radius: 8px;
+            clip-path: polygon(0 0, 82% 50%, 0 100%);
+        }
+
+        .gate-symbol.nand::after,
+        .gate-symbol.nor::after,
+        .gate-symbol.xnor::after,
+        .gate-symbol.not::after {
+            content: "";
+            width: 14px;
+            height: 14px;
+            border: 3px solid #176b6b;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+        }
+
+        .gate-wrap {
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        .small {
+            color: #5d6874;
+            font-size: .94rem;
+        }
+
+        .formula {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .truth td, .truth th {
+            text-align: center;
+        }
+
+
+        @media print {
+            nav, .tool, button {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            section {
+                break-inside: avoid;
+            }
+        }
+
+        .kmap-table {
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.kmap-table th,
+.kmap-table td {
+    border: 2px solid #000;
+    width: 70px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.kmap-table th {
+    background-color: #f2f2f2;
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class = "wrap">
+            <h1>Gate-Level Minimization</h1>
+            <p class = "subtitle">A study guide with K-Maps, two, three, four, five Variable K-map along with don't care conditions.</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class = "wrap">
+            <a href = "#kmaps">K-Maps</a>
+            <a href = "#two_variable_k-maps">Two Variable K-maps</a>
+            <a href = "#three_variable_k-maps">Three Variable K-maps</a>
+            <a href = "#four_variable_k-maps">Four Variable K-maps</a>
+            <a href = "#five_variable_k-maps">Five variable k-maps</a>
+            <a href = "#donot_care">K-maps with don't care</a>
+            <a href = "#problems">Problems on K-maps</a>
+        </div>
+    </nav>
+
+    <main class = "wrap">
+        <section id = "kmaps">
+            <h2>1. What Are K-maps?</h2>
+            <p>A <b>Karnaugh Map (K-Map) is a graphical method used to simplify Boolean expressions and reduce the number of logic gates</b> required in a circuit.</p>
+            
+            
+            </div>
+            <div class = "grid">
+                <div class = "card method">
+                    <h3> Steps to solve K-maps (SOP Minimisation) </h3>
+                    <pre>1.Determine the number of variables:
+        If it is given in question as , F(A,B) it means that there are 2 variables&#10;        If it is given in question as, F(A,B,C) it means that there are 3 variables and so on
+For F(A,B) → 2 variables → 2×2 K-map (4 cells)
+For F(A,B,C) → 3 variables → 2x4 K-map (8 cells)
+For F(A,B,C,D) → 4 variables → 4x4 K-map (16 cells)
+For F(A,B,C,D,E) → 5 variables → 2(4x4) K-map (32 cells)<br>
+<b>Note</b> : Since construction of 32 cells isn't possible to draw on paper we divide the 5 Variable K-map into two equivalent four variable maps with A,B,C,D and E
+Variable A distinguishes between the two maps  A= 0; A=1
+2.Draw appropriate K-Map(Using Gray Code order)
+3.Fill the K-Map
+4.Form Groups(Group sizes are in powers of 2)
+5.Always prefer : 8-cell groups > 4-cell groups > 2-cell groups > 1-cell groups
+Example:
+Instead of two pairs, make one quad if possible.
+The larger the group, the simpler the answer.
+6.Use Wrap-Around Adjacency:
+Left edge touches right edge.
+Top edge touches bottom edge.
+Corners are adjacent.
+Example:
+1 0 0 1
+The first and last pairs cells can form a pair.
+If overlapping is possible then allow it.
+7.Find the common variables in each group(If value of the variables are changing then remove them)
+Example:
+In two groups we have as, 
+A = 0, B = 0, C = 1
+A = 0, B = 1, C = 1
+Here, B is changing of its values, So remove B, Finally we get as
+<b>A'C</b>
+8.SOP all the answers 
+</pre>
+            </div>
+        </div>
+</section>
+
+        <section id="two_variable_k-maps">
+    <h2>2. Two Variable K-Maps</h2>
+    <p>It has 2 variables consisting of 4 cells (2×2 Cells)</p>
+    <p><b>Remember this table</b></p>
+
+    <table class="kmap-table">
+        <tr>
+            <th>A\B</th>
+            <th>0</th>
+            <th>1</th>
+        </tr>
+        <tr>
+            <th>0</th>
+            <td>m₀</td>
+            <td>m₁</td>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td>m₂</td>
+            <td>m₃</td>
+        </tr>
+    </table>
+    <p><b>The MinTerm values are :<br>m₀ = A'B'<br>m₁ = A'B<br>m₂ = AB'<br>m₃ = AB</p>
+</section>
+
+        <section id = "three_variable_k-maps">
+            <h2>3. Three Variable K-Maps</h2>
+            <p>It has 3 variables consisting of 8 cells(2x4 Cells)</p>
+            <p><b>Remember this table</b></p>
+            <table class = "kmap-table">
+                <tr>
+                    <th>A\BC</th>
+                    <th>00</th>
+                    <th>01</th>
+                    <th>11</th>
+                    <th>10</th>
+                </tr>
+                <tr>
+                    <th>0</th>
+                    <td>m₀</td>
+                    <td>m₁</td>
+                    <td>m₃</td>
+                    <td>m₂</td>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td>m₄</td>
+                    <td>m₅</td>
+                    <td>m₇</td>
+                    <td>m₆</td>
+                </tr>
+               
+            </table>
+            <p><b>The min terms are : <br>m₀ = A'B'C'<br>m₁ = A'B'C<br>m₃ = A'BC<br>m₂ = A'BC'<br>m₄ = AB'C'<br>m₅ = AB'C<br>m₇ = ABC<br>m₆ = ABC'</b></p>
+
+        </section>
+
+        <section id = "four_variable_k-maps">
+            <h2>4. Four Variable K-Maps</h2>
+            <p>It has 4 variables consisting of 16 cells(4x4 Cells)</p>
+            <p><b>Remember this table</b></p>
+            <table class = "kmap-table">
+                <tr>
+                    <th>AB\CD</th>
+                    <th>00</th>
+                    <th>01</th>
+                    <th>11</th>
+                    <th>10</th>
+                </tr>
+
+                <tr>
+                    <th>00</th>
+                    <td>m₀</td>
+                    <td>m₁</td>
+                    <td>m₃</td>
+                    <td>m₂</td>
+                </tr>
+
+                <tr>
+                    <th>01</th>
+                    <td>m₄</td>
+                    <td>m₅</td>
+                    <td>m₇</td>
+                    <td>m₆</td>
+                </tr>
+                <tr>
+                    
+                    <th>10</th>
+                    <td>m₁₂</td>
+                    <td>m₁₃</td>
+                    <td>m₁₅</td>
+                    <td>m₁₄</td>
+                </tr>
+
+
+                <tr>
+                    <th>11</th>
+                    <td>m₈</td>
+                    <td>m₉</td>
+                    <td>m₁₁</td>
+                    <td>m₁₀</td>
+                </tr>
+
+               
+
+
+        </section>
+    </table>
+<p><b>The min terms are : <br>m₀ = A'B'C'D'<br>m₁ = A'B'C'D<br>m₃ = A'B'CD<br>m₂ = A'B'CD'<br>m₄ = A'BC'D'<br>m₅ = A'BC'D<br>m₇ = A'BCD<br>m₆ = A'BCD'<br>m₁₂ = ABC'D'<br>m₁₃ = ABC'D<br>m₁₅ = ABCD<br>m₁₄ = ABCD'<br>m₈ = AB'C'D'<br>m₉ = AB'C'D<br>m₁₁ = AB'CD <br>m₁₀ = AB'CD'</b></p>
+
+
+
+</section>
+
+            
+        <section id = "five_variable_k-maps">
+            <h2>5. Five Variable K-Maps</h2>
+            <p>It has 5 variables consisting of 32 cells(2(4x4 Cells))</p>
+            <p><b>Remember this table</b></p>
+            <table class = "kmap-table">
+                <tr>
+                    <p>A = 0</p>
+                    <th>BC\DE</th>
+                    <th>00</th>
+                    <th>01</th>
+                    <th>11</th>
+                    <th>10</th>
+                </tr>
+
+                <tr>
+                    <th>00</th>
+                    <td>m₀</td>
+                    <td>m₁</td>
+                    <td>m₃</td>
+                    <td>m₂</td>
+                </tr>
+
+                <tr>
+                    <th>01</th>
+                    <td>m₄</td>
+                    <td>m₅</td>
+                    <td>m₇</td>
+                    <td>m₆</td>
+                </tr>
+                <tr>
+                    
+                    <th>10</th>
+                    <td>m₁₂</td>
+                    <td>m₁₃</td>
+                    <td>m₁₅</td>
+                    <td>m₁₄</td>
+                </tr>
+
+
+                <tr>
+                    <th>11</th>
+                    <td>m₈</td>
+                    <td>m₉</td>
+                    <td>m₁₁</td>
+                    <td>m₁₀</td>
+                </tr>
+        </section>
+    </table>
+
+                <table class = "kmap-table">
+                <tr>
+                    <p>A = 1</p>
+                    <th>BC\DE</th>
+                    <th>00</th>
+                    <th>01</th>
+                    <th>11</th>
+                    <th>10</th>
+                </tr>
+
+                <tr>
+                    <th>00</th>
+                    <td>m₁₆</td>
+                    <td>m₁₇</td>
+                    <td>m₁₉</td>
+                    <td>m₁₈</td>
+                </tr>
+
+                <tr>
+                    <th>01</th>
+                    <td>m₂₀</td>
+                    <td>m₂₁</td>
+                    <td>m₂₃</td>
+                    <td>m₂₂</td>
+                </tr>
+                <tr>
+                    
+                    <th>10</th>
+                    <td>m₂₈</td>
+                    <td>m₂₉</td>
+                    <td>m₃₁</td>
+                    <td>m₃₀</td>
+                </tr>
+
+
+                <tr>
+                    <th>11</th>
+                    <td>m₂₄</td>
+                    <td>m₂₅</td>
+                    <td>m₂₇</td>
+                    <td>m₂₆</td>
+                </tr>
+        </section>
+    </table>
+
+<p><b>The min terms are : <br>m₀ = A'B'C'D'E'<br>m₁ = A'B'C'D'E<br>m₃ = A'B'C'DE<br>m₂ = A'B'C'DE'<br>m₄ = A'B'CDE'<br>m₅ = A'B'CD'E<br>m₇ = A'B'CDE<br>m₆ = A'B'CDE'<br>m₁₂ = A'BCD'E'<br>m₁₃ = A'BCD'E<br>m₁₅ = A'BCDE<br>m₁₄ = A'BCDE'<br>m₈ = A'BC'D'E'<br>m₉ = A'BC'D'E<br>m₁₁ = A'BC'DE<br>m₁₀ = A'BC'DE'<br>
+m₁₆ = AB'C'D'E'<br>m₁₇ = AB'C'D'E<br>m₁₉ = AB'C'DE<br>m₁₈ = AB'C'DE'<br>m₂₀ = AB'CD'E'<br>m₂₁ = AB'CD'E<br>m₂₃ = AB'CDE<br>m₂₂ = AB'CDE'<br>m₂₈ = ABCD'E'<br>m₂₉ = ABCD'E<br>m₃₁ = ABCDE<br>m₃₀ = ABCDE'<br>m₂₄ = ABC'D'E'<br>m₂₅ = ABC'D'E<br>m₂₇ = ABC'DE<br>m₂₆ = ABC'DE'
+</b></p>
+
+
+
+</section>
+             <section id="donot_care">
+    <h2>6. K-Maps with donot care(SOP)</h2>
+    <p>A don't care condition is an input combination for which the output is not important or never occurs in practice.</p>
+    <p><b>It is represented by X or d.</b></p>
+    <p>Steps to Remember</p>
+    <pre>1. Draw the K-Map
+2. Fill the K-Map
+Put 1 in minterms
+Put X or d in donot care condition
+Put 0 elsewhere
+Ex: F(A,B,C)=Σm(1,3,7) donot care d(5)</pre>
+
+    <table class="kmap-table">
+        <tr>
+            <th>A\BC</th>
+            <th>00</th>
+            <th>01</th>
+            <th>11</th>
+            <th>10</th>
+        </tr>
+        <tr>
+            <th>0</th>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td>0</td>
+            <td>X</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+    </table>
+    <pre>3. Form groups (Try to include X if it forms a larger group)
+Without using X
+1 1 
+X 1 
+
+
+With using X
+1 1 
+1 1
+
+We have to treat X as 1 for getting a larger group 
+4. Find common variables
+
+<b>Note : This is for SOP, If you want to calculate for POS replace 1 with 0 , group 0's Use X as 0 if needed, otherwise ignore X<b></pre>
+
+</section>
+
+
+        <section id = "problems">
+    <h2> 7. Problems on K-maps</h2>
+    <p>2-Variable K-Map Problems<br>1. F(A,B)=Σm(1,3)</p>
+
+    <table class = "kmap-table">
+        <tr>
+            <th>A\B</th>
+            <th>0</th>
+            <th>1</th>
+        </tr>
+        <tr>
+            <th>0</th>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+    </table>
+
+<p>Group m₁ and m₃<br>
+m₁ = A'B<br>
+m₃ = AB<br>
+Common terms in both are B<br>Hence the final answer is (SOP)<br>
+<b>F = B</b></p>
+<p>-------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+<p>2. F(A,B)=Σm(2,3)</p>
+
+<table class = "kmap-table">
+    <tr>
+        <th>A\B</th>
+        <th>0</th>
+        <th>1</th>
+    </tr>
+    <tr>
+        <th>0</th>
+        <td>0</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <th>1</th>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+</table>
+<p>Group m₂ and m₃<br>
+m₂ = AB'<br>
+m₃ = AB<br>
+Common terms in both are A<br>Hence the final answer is(SOP) <br>
+<b>F = A</b></p>
+<p>-------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>3. F(A,B)=Σm(1,2,3)</p>
+<table class = "kmap-table">
+    <tr>
+        <th>A\B</th>
+        <th>0</th>
+        <th>1</th>
+    </tr>
+    <tr>
+        <th>0</th>
+        <td>0</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <th>1</th>
+        <td>1</td>
+        <td>1</td>
+
+    </tr>
+</table>
+<p>Group m₁ and m₃, also m₂ m₃<br>
+m₁ = A'B<br>
+m₃ = AB<br>
+The common terms in both are B<br>
+m₂ = AB'<br>
+m₃ = AB<br>
+The common terms in both are A<br>
+Hence the final answer(SOP) is A + B</p>
+
+<p>-------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+
+
+<p>3 Variable K-Maps</p>
+<p>1. F(A,B,C)=Σm(1,3,5,7)</p>
+<table class = "kmap-table">
+    <tr>
+        <th>A\BC</th>
+        <th>00</th>
+        <th>01</th>
+        <th>11</th>
+        <th>10</th>
+    </tr>
+    <tr>
+        <th>0</th>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <th>1</th>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+
+    </tr>
+
+</table>
+<p>Here m₁, m₃, m₅, m₇ form a quad (Instead of taking two at once the preference is always check for 8 > 4 > 2 > 1)<br>
+Hence the common terms in them are C<br>
+
+Hence the final answer(SOP) is C
+
+</p>
+
+
+<p>-------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>2. F(A,B,C)=Σm(2,3,6,7) </p>
+<table class = "kmap-table">
+    <tr>
+        <th>A\BC</th>
+        <th>00</th>
+        <th>01</th>
+        <th>11</th>
+        <th>10</th>
+    </tr>
+    <tr>
+        <th>0</th>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <th>1</th>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+</table>
+
+<p>Here again it forms a quad<br>
+m₃, m₂, m₇, m₆<br>
+m₃ = A'BC<br>m₂ = A'BC'<br>m₇ = ABC<br>m₆ = ABC'<br>
+The common terms are B<br>
+Hence the final answer(SOP) is B<br>
+</p>
+
+<p>3. F(A,B,C)=Σm(1,3,4,5)</p>
+<p>Try this on own</p>
+<p>Answer is F = A'C + AB'</p>
+<p>-------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p> For more : <a href = "https://drive.google.com/drive/folders/15Bx7Qo-T8JpM7xBtY-0CLErCkK1nZh_V"> SUMS </a>refer</p>
+
+
+</section>
+   
+        
+</body>
+</html>
